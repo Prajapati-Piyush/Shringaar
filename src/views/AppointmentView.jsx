@@ -167,7 +167,7 @@ export default function AppointmentView({ storeConfig, onShowToast }) {
                   rows={2}
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Describe the occasion, preferred silhouettes, or outfit colors..."
+                  placeholder="Describe the occasion, preferred jewellery types, or outfit colors..."
                   className="w-full px-4 py-2.5 text-xs rounded-xl border border-[#E9DED1] bg-white text-[#29251F] focus:outline-none focus:border-[#C6A46A] resize-none"
                 />
               </div>

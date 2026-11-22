@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   ShoppingBag,
-  Search,
   X,
   Heart,
   ChevronLeft,
@@ -19,8 +18,6 @@ export default function Header({
   onNavigate,
   activeCategory,
   onSelectCategory,
-  searchQuery,
-  onSearchChange,
   wishlistCount,
   cartCount,
   cartSubtotal,
@@ -29,7 +26,6 @@ export default function Header({
 }) {
   const [activeAnnouncementIdx, setActiveAnnouncementIdx] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   // Auto-cycle announcement bar every 5s
   useEffect(() => {
@@ -59,7 +55,7 @@ export default function Header({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full transition-all duration-300 shadow-sm bg-[#FAF7F2]">
+    <header className="sticky top-0 z-40 w-full max-w-full overflow-hidden transition-all duration-300 shadow-sm bg-[#FAF7F2]">
       
       {/* =====================================================================
           TIER 1: SLIM LUXURY ANNOUNCEMENT STRIP (#29251F)
@@ -103,7 +99,7 @@ export default function Header({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             
-            {/* Left: Mobile Menu Toggle + Desktop Search */}
+            {/* Left: Mobile Menu Toggle */}
             <div className="flex items-center gap-3 flex-1 max-w-xs">
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
@@ -111,40 +107,6 @@ export default function Header({
                 aria-label="Open mobile menu"
               >
                 <Menu className="w-5 h-5" />
-              </button>
-
-              <div className="relative w-full hidden md:block">
-                <Search className="w-4 h-4 text-[#958878] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => {
-                    onSearchChange(e.target.value);
-                    if (currentView !== 'home') onNavigate('home');
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleCatalogJump();
-                  }}
-                  placeholder="Search jhumkas, chokers, kada..."
-                  className="w-full pl-9 pr-8 py-2 rounded-full text-xs bg-[#FAF7F2] border border-[#E9DED1] focus:outline-none focus:border-[#C6A46A] focus:bg-white text-[#29251F] placeholder-[#958878] transition-all"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => onSearchChange("")}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#958878] hover:text-[#29251F]"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-
-              {/* Mobile Search Button */}
-              <button
-                onClick={() => setIsMobileSearchOpen((prev) => !prev)}
-                className="md:hidden p-2 text-[#29251F] hover:text-[#C6A46A] transition-colors"
-                aria-label="Toggle mobile search"
-              >
-                <Search className="w-5 h-5" />
               </button>
             </div>
 
@@ -160,7 +122,7 @@ export default function Header({
                 </h1>
                 <span className="text-[#C6A46A] text-sm group-hover:rotate-45 transition-transform duration-300">✦</span>
               </div>
-              <p className="text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-[#958878] font-medium -mt-0.5">
+              <p className="text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-[#958878] font-medium -mt-0.5 max-w-[170px] sm:max-w-none truncate">
                 {storeConfig.subTitle}
               </p>
             </div>
@@ -216,167 +178,6 @@ export default function Header({
             </div>
 
           </div>
-
-          {/* Mobile Search Overlay Bar */}
-          {isMobileSearchOpen && (
-            <div className="md:hidden py-2.5 pb-3 border-t border-[#E9DED1] animate-fade-in flex items-center gap-2">
-              <div className="relative flex-1">
-                <Search className="w-4 h-4 text-[#958878] absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => {
-                    onSearchChange(e.target.value);
-                    if (currentView !== 'home') onNavigate('home');
-                  }}
-                  placeholder="Search jhumkas, chokers, kada..."
-                  autoFocus
-                  className="w-full pl-9 pr-8 py-2 rounded-full text-xs bg-[#FAF7F2] border border-[#E9DED1] focus:outline-none focus:border-[#C6A46A] text-[#29251F]"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => onSearchChange("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#958878]"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-              <button
-                onClick={() => setIsMobileSearchOpen(false)}
-                className="text-xs font-semibold text-[#958878] px-1"
-              >
-                Cancel
-              </button>
-            </div>
-          )}
-
-        </div>
-      </div>
-
-      {/* =====================================================================
-          TIER 3: UNIFIED LUXURY SILHOUETTE & EDITORIAL NAVIGATION RAIL
-          Single clean line, perfectly centered, zero awkward wraps
-          ===================================================================== */}
-      <div className="bg-[#FAF7F2] border-b border-[#E9DED1] py-2.5 px-4 overflow-x-auto no-scrollbar">
-        <div className="max-w-7xl mx-auto flex items-center justify-start lg:justify-center gap-5 sm:gap-7 xl:gap-8 overflow-x-auto no-scrollbar">
-          
-          <button
-            onClick={() => {
-              onSelectCategory("All");
-              onNavigate('home');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className={`flex-shrink-0 whitespace-nowrap text-[11px] uppercase tracking-[0.2em] font-medium transition-colors pb-0.5 ${
-              currentView === 'home' && activeCategory === 'All'
-                ? "text-[#C6A46A] border-b-2 border-[#C6A46A] font-bold"
-                : "text-[#5A5348] hover:text-[#C6A46A]"
-            }`}
-          >
-            Home
-          </button>
-
-          <button
-            onClick={() => handleCategoryClick("All")}
-            className={`flex-shrink-0 whitespace-nowrap text-[11px] uppercase tracking-[0.2em] font-medium transition-colors pb-0.5 ${
-              currentView === 'home' && activeCategory === 'All'
-                ? "text-[#5A5348] hover:text-[#C6A46A]"
-                : "text-[#5A5348] hover:text-[#C6A46A]"
-            }`}
-          >
-            Curated Heirlooms
-          </button>
-
-          <button
-            onClick={() => handleCategoryClick("Gold Jewellery")}
-            className={`flex-shrink-0 whitespace-nowrap text-[11px] uppercase tracking-[0.2em] font-medium transition-colors pb-0.5 ${
-              activeCategory === 'Gold Jewellery' && currentView === 'home'
-                ? "text-[#C6A46A] border-b-2 border-[#C6A46A] font-bold"
-                : "text-[#5A5348] hover:text-[#C6A46A]"
-            }`}
-          >
-            Gold Jewellery
-          </button>
-
-          <button
-            onClick={() => handleCategoryClick("Diamond Jewellery")}
-            className={`flex-shrink-0 whitespace-nowrap text-[11px] uppercase tracking-[0.2em] font-medium transition-colors pb-0.5 ${
-              activeCategory === 'Diamond Jewellery' && currentView === 'home'
-                ? "text-[#C6A46A] border-b-2 border-[#C6A46A] font-bold"
-                : "text-[#5A5348] hover:text-[#C6A46A]"
-            }`}
-          >
-            Diamond Jewellery
-          </button>
-
-          <button
-            onClick={() => handleCategoryClick("Bridal Jewellery")}
-            className={`flex-shrink-0 whitespace-nowrap text-[11px] uppercase tracking-[0.2em] font-medium transition-colors pb-0.5 ${
-              activeCategory === 'Bridal Jewellery' && currentView === 'home'
-                ? "text-[#C6A46A] border-b-2 border-[#C6A46A] font-bold"
-                : "text-[#5A5348] hover:text-[#C6A46A]"
-            }`}
-          >
-            The Bridal Suite
-          </button>
-
-          <button
-            onClick={() => handleCategoryClick("Rings")}
-            className={`flex-shrink-0 whitespace-nowrap text-[11px] uppercase tracking-[0.2em] font-medium transition-colors pb-0.5 ${
-              activeCategory === 'Rings' && currentView === 'home'
-                ? "text-[#C6A46A] border-b-2 border-[#C6A46A] font-bold"
-                : "text-[#5A5348] hover:text-[#C6A46A]"
-            }`}
-          >
-            Rings
-          </button>
-
-          <button
-            onClick={() => handleCategoryClick("Earrings")}
-            className={`flex-shrink-0 whitespace-nowrap text-[11px] uppercase tracking-[0.2em] font-medium transition-colors pb-0.5 ${
-              activeCategory === 'Earrings' && currentView === 'home'
-                ? "text-[#C6A46A] border-b-2 border-[#C6A46A] font-bold"
-                : "text-[#5A5348] hover:text-[#C6A46A]"
-            }`}
-          >
-            Earrings
-          </button>
-
-          <button
-            onClick={() => handleCategoryClick("Necklaces")}
-            className={`flex-shrink-0 whitespace-nowrap text-[11px] uppercase tracking-[0.2em] font-medium transition-colors pb-0.5 ${
-              activeCategory === 'Necklaces' && currentView === 'home'
-                ? "text-[#C6A46A] border-b-2 border-[#C6A46A] font-bold"
-                : "text-[#5A5348] hover:text-[#C6A46A]"
-            }`}
-          >
-            Necklaces
-          </button>
-
-          <button
-            onClick={() => handleCategoryClick("Bangles")}
-            className={`flex-shrink-0 whitespace-nowrap text-[11px] uppercase tracking-[0.2em] font-medium transition-colors pb-0.5 ${
-              activeCategory === 'Bangles' && currentView === 'home'
-                ? "text-[#C6A46A] border-b-2 border-[#C6A46A] font-bold"
-                : "text-[#5A5348] hover:text-[#C6A46A]"
-            }`}
-          >
-            Bangles
-          </button>
-
-          <button
-            onClick={() => {
-              onNavigate('contact');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className={`flex-shrink-0 whitespace-nowrap text-[11px] uppercase tracking-[0.2em] font-medium transition-colors pb-0.5 ${
-              currentView === 'contact'
-                ? "text-[#C6A46A] border-b-2 border-[#C6A46A] font-bold"
-                : "text-[#5A5348] hover:text-[#C6A46A]"
-            }`}
-          >
-            Contact Us
-          </button>
 
         </div>
       </div>
@@ -493,7 +294,7 @@ export default function Header({
               {/* Category Links */}
               <div className="p-4 space-y-1">
                 <p className="text-[10px] font-bold text-[#958878] uppercase tracking-widest px-3 mb-2">
-                  Browse by Silhouette
+                  Browse by Category
                 </p>
                 {storeConfig.categories.map((cat) => (
                   <button

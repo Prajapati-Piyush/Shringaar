@@ -58,7 +58,7 @@ export default function CartView({
     const itemsList = cart
       .map(
         (item, idx) =>
-          `${idx + 1}. *${item.title}*\n   • Size: ${item.selectedSize}\n   • Qty: ${item.quantity}\n   • Price: ₹${(
+          `${idx + 1}. *${item.title}*\n   • Qty: ${item.quantity}\n   • Price: ₹${(
             item.price * item.quantity
           ).toLocaleString("en-IN")}`
       )
@@ -116,17 +116,17 @@ Please confirm my order and initiate express dispatch! 🙏`;
             <div className="lg:col-span-7 space-y-6">
               
               {/* Free Shipping Dynamic Progress Meter */}
-              <div className="bg-[#FAF7F2] rounded-2xl border border-[#E9DED1] p-4 sm:p-5 shadow-sm">
+              <div className="bg-[#FAF7F2] rounded-2xl border border-[#E9DED1] p-3.5 sm:p-5 shadow-sm">
                 <div className="flex items-center justify-between text-xs mb-2">
-                  <span className="font-semibold text-[#29251F] flex items-center gap-1.5">
-                    <Truck className="w-4 h-4 text-[#C6A46A]" />
+                  <span className="font-semibold text-[#29251F] flex items-center gap-1.5 min-w-0 pr-2">
+                    <Truck className="w-4 h-4 text-[#C6A46A] flex-shrink-0" />
                     {isFreeShipping ? (
-                      <span className="text-[#1B4332] font-bold">✨ You've unlocked FREE Insured Air Shipping!</span>
+                      <span className="text-[#1B4332] font-bold text-[11px] sm:text-xs truncate">✨ You've unlocked FREE Insured Air Shipping!</span>
                     ) : (
-                      <span>Add <strong className="text-[#29251F]">₹{freeShippingRemainder.toLocaleString("en-IN")}</strong> more for <strong>FREE Shipping</strong></span>
+                      <span className="text-[11px] sm:text-xs truncate">Add <strong className="text-[#29251F]">₹{freeShippingRemainder.toLocaleString("en-IN")}</strong> more for <strong>FREE Shipping</strong></span>
                     )}
                   </span>
-                  <span className="text-[11px] font-bold text-[#C6A46A]">{freeShippingProgress}%</span>
+                  <span className="text-[11px] font-bold text-[#C6A46A] flex-shrink-0">{freeShippingProgress}%</span>
                 </div>
                 <div className="w-full bg-[#E9DED1] rounded-full h-2 overflow-hidden">
                   <div
@@ -137,9 +137,9 @@ Please confirm my order and initiate express dispatch! 🙏`;
               </div>
 
               {/* Items List */}
-              <div className="bg-[#FAF7F2] rounded-3xl border border-[#E9DED1] p-6 shadow-luxury divide-y divide-[#E9DED1]">
-                <div className="flex items-center justify-between pb-4">
-                  <h2 className="font-editorial text-xl font-bold text-[#29251F]">
+              <div className="bg-[#FAF7F2] rounded-2xl sm:rounded-3xl border border-[#E9DED1] p-3.5 sm:p-6 shadow-luxury divide-y divide-[#E9DED1]">
+                <div className="flex items-center justify-between pb-3 sm:pb-4">
+                  <h2 className="font-editorial text-lg sm:text-xl font-bold text-[#29251F]">
                     Bag Items ({cart.reduce((s, i) => s + i.quantity, 0)})
                   </h2>
                   <button
@@ -151,9 +151,9 @@ Please confirm my order and initiate express dispatch! 🙏`;
                 </div>
 
                 {cart.map((item) => (
-                  <div key={item.cartItemId || item.id} className="py-4 flex gap-4 items-center">
+                  <div key={item.cartItemId || item.id} className="py-3 sm:py-4 flex gap-3 sm:gap-4 items-center">
                     {/* Thumbnail */}
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-[#EFE9DF] overflow-hidden flex-shrink-0 border border-[#E9DED1]">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl bg-[#EFE9DF] overflow-hidden flex-shrink-0 border border-[#E9DED1]">
                       <SafeImage
                         src={item.image}
                         alt={item.title}
@@ -164,27 +164,24 @@ Please confirm my order and initiate express dispatch! 🙏`;
                     {/* Details */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <p className="text-[10px] text-[#958878] uppercase tracking-wider font-semibold">{item.category}</p>
-                          <h4 className="font-editorial text-base sm:text-lg font-semibold text-[#29251F] truncate">
+                        <div className="flex-1 min-w-0 pr-1.5">
+                          <p className="text-[10px] text-[#958878] uppercase tracking-wider font-semibold truncate">{item.category}</p>
+                          <h4 className="font-editorial text-xs sm:text-base md:text-lg font-semibold text-[#29251F] truncate" title={item.title}>
                             {item.title}
                           </h4>
-                          <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-[#E9DED1]/60 text-[#29251F] text-[10px] font-bold">
-                            Size: {item.selectedSize}
-                          </span>
                         </div>
 
                         {/* Line Item Total */}
-                        <div className="text-right">
-                          <p className="text-base font-bold text-[#29251F]">
+                        <div className="text-right flex-shrink-0">
+                          <p className="text-sm sm:text-base font-bold text-[#29251F] whitespace-nowrap">
                             ₹{(item.price * item.quantity).toLocaleString("en-IN")}
                           </p>
-                          <p className="text-[10px] text-[#958878]">₹{item.price.toLocaleString("en-IN")} each</p>
+                          <p className="text-[9px] sm:text-[10px] text-[#958878] whitespace-nowrap">₹{item.price.toLocaleString("en-IN")} each</p>
                         </div>
                       </div>
 
                       {/* Stepper & Remove */}
-                      <div className="flex items-center justify-between mt-3">
+                      <div className="flex items-center justify-between mt-2.5 sm:mt-3">
                         <div className="flex items-center border border-[#E9DED1] rounded-full bg-white px-2 py-1 shadow-sm">
                           <button
                             onClick={() => onUpdateQuantity(item.cartItemId || item.id, -1)}
@@ -193,7 +190,7 @@ Please confirm my order and initiate express dispatch! 🙏`;
                           >
                             <Minus className="w-3.5 h-3.5 text-[#29251F]" />
                           </button>
-                          <span className="w-7 text-center text-xs font-bold text-[#29251F]">
+                          <span className="w-6 sm:w-7 text-center text-xs font-bold text-[#29251F]">
                             {item.quantity}
                           </span>
                           <button
@@ -220,7 +217,7 @@ Please confirm my order and initiate express dispatch! 🙏`;
               </div>
 
               {/* Delivery Address Card */}
-              <div className="bg-[#FAF7F2] rounded-3xl border border-[#E9DED1] p-6 shadow-luxury">
+              <div className="bg-[#FAF7F2] rounded-2xl sm:rounded-3xl border border-[#E9DED1] p-3.5 sm:p-6 shadow-luxury">
                 <div className="flex items-center gap-2 mb-4">
                   <MapPin className="w-4 h-4 text-[#C6A46A]" />
                   <h3 className="font-editorial text-xl font-bold text-[#29251F]">
@@ -297,7 +294,7 @@ Please confirm my order and initiate express dispatch! 🙏`;
               </div>
 
               {/* Payment Mode Selection */}
-              <div className="bg-[#FAF7F2] rounded-3xl border border-[#E9DED1] p-6 shadow-luxury">
+              <div className="bg-[#FAF7F2] rounded-2xl sm:rounded-3xl border border-[#E9DED1] p-3.5 sm:p-6 shadow-luxury">
                 <div className="flex items-center gap-2 mb-4">
                   <CreditCard className="w-4 h-4 text-[#C6A46A]" />
                   <h3 className="font-editorial text-xl font-bold text-[#29251F]">
@@ -309,7 +306,7 @@ Please confirm my order and initiate express dispatch! 🙏`;
                   {/* UPI Option */}
                   <label
                     onClick={() => setPaymentMethod("upi")}
-                    className={`p-4 rounded-2xl border cursor-pointer transition-all flex items-start gap-3 ${
+                    className={`p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border cursor-pointer transition-all flex items-start gap-3 ${
                       paymentMethod === "upi"
                         ? "border-[#C6A46A] bg-[#FAF7F2] ring-1 ring-[#C6A46A]"
                         : "border-[#E9DED1] bg-white hover:bg-[#FAF7F2]"
@@ -334,7 +331,7 @@ Please confirm my order and initiate express dispatch! 🙏`;
                   {/* COD Option */}
                   <label
                     onClick={() => setPaymentMethod("cod")}
-                    className={`p-4 rounded-2xl border cursor-pointer transition-all flex items-start gap-3 ${
+                    className={`p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border cursor-pointer transition-all flex items-start gap-3 ${
                       paymentMethod === "cod"
                         ? "border-[#C6A46A] bg-[#FAF7F2] ring-1 ring-[#C6A46A]"
                         : "border-[#E9DED1] bg-white hover:bg-[#FAF7F2]"
@@ -363,7 +360,7 @@ Please confirm my order and initiate express dispatch! 🙏`;
             {/* Right 5 Columns: Order Summary Card */}
             <div className="lg:col-span-5 sticky top-28 space-y-6">
               
-              <div className="bg-[#FAF7F2] rounded-3xl border border-[#E9DED1] p-6 sm:p-8 shadow-luxury">
+              <div className="bg-[#FAF7F2] rounded-2xl sm:rounded-3xl border border-[#E9DED1] p-4 sm:p-6 md:p-8 shadow-luxury">
                 <h3 className="font-editorial text-2xl font-bold text-[#29251F] mb-6 pb-4 border-b border-[#E9DED1]">
                   Order Summary
                 </h3>

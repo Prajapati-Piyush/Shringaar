@@ -22,7 +22,6 @@ export default function App() {
   // 'home' | 'wishlist' | 'cart' | 'contact'
   const [currentView, setCurrentView] = useState('home');
   const [activeCategory, setActiveCategory] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
 
   // Drawers & Modals
   const [isBagOpen, setIsBagOpen] = useState(false);
@@ -41,8 +40,7 @@ export default function App() {
     return [
       {
         ...flagship,
-        cartItemId: `${flagship.id}-${flagship.sizes[0]}`,
-        selectedSize: flagship.sizes[0],
+        cartItemId: flagship.id,
         quantity: 1
       }
     ];
@@ -80,15 +78,14 @@ export default function App() {
   }, [wishlist]);
 
   // Cart Operations
-  const handleAddToBag = (product, sizeChoice = null) => {
-    const size = sizeChoice || product.sizes[0] || "One Size";
-    const cartItemId = `${product.id}-${size}`;
+  const handleAddToBag = (product) => {
+    const cartItemId = product.id;
 
     setCart((prev) => {
-      const existing = prev.find((item) => item.cartItemId === cartItemId || (item.id === product.id && item.selectedSize === size));
+      const existing = prev.find((item) => item.id === product.id);
       if (existing) {
         return prev.map((item) =>
-          item.cartItemId === cartItemId || (item.id === product.id && item.selectedSize === size)
+          item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -98,20 +95,19 @@ export default function App() {
         {
           ...product,
           cartItemId,
-          selectedSize: size,
           quantity: 1
         }
       ];
     });
 
-    showToast(`✨ Added "${product.title}" (${size}) to Bag!`);
+    showToast(`✨ Added "${product.title}" to Bag!`);
   };
 
   const handleUpdateCartQuantity = (cartItemId, delta) => {
     setCart((prev) =>
       prev
         .map((item) => {
-          const match = item.cartItemId === cartItemId || `${item.id}-${item.selectedSize}` === cartItemId;
+          const match = item.cartItemId === cartItemId || item.id === cartItemId;
           if (match) {
             const nextQty = item.quantity + delta;
             return nextQty > 0 ? { ...item, quantity: nextQty } : null;
@@ -123,7 +119,7 @@ export default function App() {
   };
 
   const handleRemoveFromCart = (cartItemId, title) => {
-    setCart((prev) => prev.filter((item) => (item.cartItemId || `${item.id}-${item.selectedSize}`) !== cartItemId));
+    setCart((prev) => prev.filter((item) => (item.cartItemId || item.id) !== cartItemId));
     showToast(`Removed "${title}" from bag`);
   };
 
@@ -155,7 +151,7 @@ export default function App() {
     const itemsText = cart
       .map(
         (item, idx) =>
-          `${idx + 1}. *${item.title}*\n   • Size: ${item.selectedSize}\n   • Qty: ${item.quantity}\n   • Price: ₹${(
+          `${idx + 1}. *${item.title}*\n   • Qty: ${item.quantity}\n   • Price: ₹${(
             item.price * item.quantity
           ).toLocaleString("en-IN")}`
       )
@@ -192,7 +188,7 @@ Please confirm my order details and initiate express dispatch! 🙏`;
   }, [isBagOpen, isWishlistOpen, quickViewProduct]);
 
   return (
-    <div className="min-h-screen bg-[#F5F0E7] text-[#29251F] font-sans antialiased selection:bg-[#E9DED1] selection:text-[#29251F] flex flex-col justify-between">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#F5F0E7] text-[#29251F] font-sans antialiased selection:bg-[#E9DED1] selection:text-[#29251F] flex flex-col justify-between relative">
       
       {/* Shared Luxury Header with 4 Sections */}
       <Header
@@ -201,8 +197,6 @@ Please confirm my order details and initiate express dispatch! 🙏`;
         onNavigate={handleNavigate}
         activeCategory={activeCategory}
         onSelectCategory={setActiveCategory}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
         wishlistCount={wishlistCount}
         cartCount={totalItemsCount}
         cartSubtotal={cartSubtotal}
@@ -211,7 +205,7 @@ Please confirm my order details and initiate express dispatch! 🙏`;
       />
 
       {/* Main Dynamic View Router (Exclusively the 4 Main Sections) */}
-      <main className="flex-1 flex flex-col w-full">
+      <main className="flex-1 flex flex-col w-full max-w-full overflow-x-hidden">
         {currentView === 'home' && (
           <HomeView
             storeConfig={STORE_CONFIG}

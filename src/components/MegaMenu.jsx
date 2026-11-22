@@ -18,7 +18,7 @@ export default function MegaMenu({
         <div className="col-span-4 border-r border-[#E9DED1] pr-6">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C6A46A]">
-              ✦ BY SILHOUETTE
+              ✦ BY CATEGORY
             </span>
           </div>
           <ul className="space-y-3">

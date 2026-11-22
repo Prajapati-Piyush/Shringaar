@@ -58,7 +58,7 @@ export default function CheckoutView({
     const itemsText = cart
       .map(
         (item, idx) =>
-          `${idx + 1}. *${item.title}*\n   • Size: ${item.selectedSize}\n   • Qty: ${item.quantity}\n   • Price: ₹${(
+          `${idx + 1}. *${item.title}*\n   • Qty: ${item.quantity}\n   • Price: ₹${(
             item.price * item.quantity
           ).toLocaleString("en-IN")}`
       )
@@ -349,7 +349,7 @@ Please confirm my order & provide dispatch tracking details. Thank you! 🙏`;
                 <SafeImage src={item.image} alt={item.title} className="w-14 h-14 object-cover rounded-xl border border-[#E9DED1] bg-[#FAF7F2]" />
                 <div className="flex-1 min-w-0">
                   <h5 className="font-editorial text-base font-medium text-[#29251F] truncate">{item.title}</h5>
-                  <p className="text-[11px] text-[#958878]">Size: {item.selectedSize} • Qty: {item.quantity}</p>
+                  <p className="text-[11px] text-[#958878]">Qty: {item.quantity}</p>
                   <p className="text-xs font-bold text-[#29251F]">₹{(item.price * item.quantity).toLocaleString("en-IN")}</p>
                 </div>
               </div>

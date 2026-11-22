@@ -102,7 +102,7 @@ export default function CartDrawer({
               </div>
             ) : (
               cart.map((item) => {
-                const cartKey = item.cartItemId || `${item.id}-${item.selectedSize}`;
+                const cartKey = item.cartItemId || item.id;
                 return (
                   <div key={cartKey} className="pt-4 first:pt-0 flex gap-3 sm:gap-4 items-center">
                     <SafeImage
@@ -126,9 +126,6 @@ export default function CartDrawer({
                       </div>
 
                       <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-[10px] font-semibold text-[#C6A46A] bg-white px-2 py-0.5 rounded border border-[#E9DED1]">
-                          Size: {item.selectedSize}
-                        </span>
                         <span className="text-[11px] text-[#958878] uppercase tracking-wider truncate">
                           {item.category}
                         </span>

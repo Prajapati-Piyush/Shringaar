@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Star,
-  Ruler,
   MapPin,
   ShoppingBag,
   Heart,
@@ -28,9 +27,7 @@ export default function ProductDetailView({
   storeConfig,
   onOpenWhatsAppDirect
 }) {
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0] || "One Size");
   const [activeImageIdx, setActiveImageIdx] = useState(0);
-  const [showSizeGuide, setShowSizeGuide] = useState(false);
   const [pincode, setPincode] = useState("");
   const [pincodeResult, setPincodeResult] = useState(null);
   const [activeTab, setActiveTab] = useState("specs");
@@ -155,15 +152,15 @@ export default function ProductDetailView({
             </p>
 
             {/* Price Box */}
-            <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E9DED1] mb-6">
-              <div className="flex items-baseline gap-3">
-                <span className="text-3xl font-bold text-[#29251F]">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#FAF7F2] border border-[#E9DED1] mb-6">
+              <div className="flex flex-wrap items-baseline gap-2 sm:gap-3">
+                <span className="text-2xl sm:text-3xl font-bold text-[#29251F]">
                   ₹{product.price.toLocaleString("en-IN")}
                 </span>
-                <span className="text-base text-[#958878] line-through">
+                <span className="text-sm sm:text-base text-[#958878] line-through">
                   ₹{product.mrp.toLocaleString("en-IN")}
                 </span>
-                <span className="text-xs font-bold text-[#1B4332] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                <span className="text-[11px] sm:text-xs font-bold text-[#1B4332] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                   Save ₹{(product.mrp - product.price).toLocaleString("en-IN")} ({discountPercent}% OFF)
                 </span>
               </div>
@@ -176,51 +173,6 @@ export default function ProductDetailView({
             <p className="text-xs sm:text-sm text-[#5A5348] leading-relaxed mb-6 font-light">
               {product.description}
             </p>
-
-            {/* Size Selector */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-xs font-bold text-[#29251F] uppercase tracking-wider">
-                  Select Dimension / Size: <span className="text-[#C6A46A]">{selectedSize}</span>
-                </label>
-                <button
-                  type="button"
-                  onClick={() => setShowSizeGuide((prev) => !prev)}
-                  className="text-[11px] text-[#C6A46A] hover:underline flex items-center gap-1 font-semibold"
-                >
-                  <Ruler className="w-3.5 h-3.5" />
-                  <span>{showSizeGuide ? "Hide Size Chart" : "Indian Size Guide"}</span>
-                </button>
-              </div>
-
-              <div className="flex flex-wrap gap-2.5">
-                {product.sizes.map((sz) => {
-                  const isSelected = selectedSize === sz;
-                  return (
-                    <button
-                      key={sz}
-                      onClick={() => setSelectedSize(sz)}
-                      className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all ${
-                        isSelected
-                          ? "bg-[#29251F] text-[#F5F0E7] ring-2 ring-[#C6A46A]"
-                          : "bg-white hover:bg-[#FAF7F2] text-[#29251F] border border-[#E9DED1]"
-                      }`}
-                    >
-                      {sz}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {showSizeGuide && (
-                <div className="mt-3.5 p-4 rounded-2xl bg-[#FAF7F2] border border-[#E9DED1] text-xs text-[#5A5348] animate-fade-in space-y-1">
-                  <p className="font-bold text-[#29251F] mb-1">Authentic Indian Jewellery Size Metrics:</p>
-                  <p>• <strong>Bangles / Kadas:</strong> 2.4 (57.2mm diameter) | 2.6 (60.3mm) | 2.8 (63.5mm)</p>
-                  <p>• <strong>Rings:</strong> Size 6 (16.5mm) | Size 7 (17.3mm) | Size 8 (18.1mm) | Size 9 (18.9mm)</p>
-                  <p>• <strong>Chains & Necklaces:</strong> 16" (Choker snug) | 18" (Princess drape) | Adjustable dori</p>
-                </div>
-              )}
-            </div>
 
             {/* Pincode Delivery Check */}
             <div className="mb-6 p-4 rounded-2xl bg-white border border-[#E9DED1] shadow-sm">
@@ -255,7 +207,7 @@ export default function ProductDetailView({
             <div className="space-y-3 mb-8">
               <div className="flex gap-3">
                 <button
-                  onClick={() => onAddToBag(product, selectedSize)}
+                  onClick={() => onAddToBag(product)}
                   className="flex-1 py-3.5 px-6 rounded-full bg-[#C6A46A] hover:bg-[#B08E55] text-white font-bold text-xs uppercase tracking-widest transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
                 >
                   <ShoppingBag className="w-4 h-4" />

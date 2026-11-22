@@ -34,7 +34,7 @@ export default function Footer({ storeConfig, onNavigate, onSelectCategory, onSh
   };
 
   return (
-    <footer className="bg-[#29251F] text-[#F5F0E7] pt-16 sm:pt-20 pb-24 sm:pb-14 border-t border-[#3D3830]">
+    <footer className="bg-[#29251F] text-[#F5F0E7] pt-16 sm:pt-20 pb-24 sm:pb-14 border-t border-[#3D3830] w-full max-w-full overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Newsletter Strip */}
@@ -175,10 +175,10 @@ export default function Footer({ storeConfig, onNavigate, onSelectCategory, onSh
             </ul>
           </div>
 
-          {/* Col 3: Silhouettes (2 cols) */}
+          {/* Col 3: Categories (2 cols) */}
           <div className="lg:col-span-2">
             <h5 className="text-xs uppercase tracking-widest text-[#DFCCA6] font-bold mb-4">
-              ✦ Silhouettes
+              ✦ Curated Categories
             </h5>
             <ul className="space-y-2 text-xs text-[#FAF7F2]/70 font-light">
               {storeConfig.categories.map((cat) => (
@@ -220,10 +220,15 @@ export default function Footer({ storeConfig, onNavigate, onSelectCategory, onSh
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/60 gap-4">
           <p>© {new Date().getFullYear()} {storeConfig.brandName} Fine Heritage & Contemporary Jewellery. All rights reserved.</p>
           
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/80 text-[11px]">
-            <Sparkles className="w-3.5 h-3.5 text-[#C6A46A]" />
-            <span>Storefront designed & engineered by <strong className="text-[#DFCCA6] font-bold">{storeConfig.footer?.craftedBy || "SHRINGAR Atelier"}</strong></span>
-          </div>
+          <a
+            href={storeConfig.footer?.agencyUrl || "https://buildwithus-agency.vercel.app/"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#C6A46A]/50 text-white/80 hover:text-white text-[11px] transition-all group cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#C6A46A] group-hover:rotate-12 transition-transform" />
+            <span>Developed by <strong className="text-[#DFCCA6] group-hover:underline font-bold">{storeConfig.footer?.craftedBy || "buildwithuss agency"}</strong></span>
+          </a>
         </div>
 
       </div>

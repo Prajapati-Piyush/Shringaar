@@ -94,84 +94,65 @@ export default function ProductCard({
         </button>
       </div>
 
-      {/* Card Info - Responsive for Mobile 2-Column & Desktop 4-Column */}
-      <div className="p-2.5 sm:p-4 md:p-5 flex flex-col flex-1 justify-between bg-white">
+      {/* Card Info - Sleeker, Compact Luxury Layout */}
+      <div className="p-2 sm:p-3 md:p-3.5 flex flex-col flex-1 justify-between bg-white">
         <div>
           {/* Category & Rating */}
-          <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-[#958878] mb-1">
+          <div className="flex items-center justify-between text-[9px] sm:text-[10px] text-[#958878] mb-0.5">
             <span className="uppercase tracking-wider font-semibold text-[#C6A46A] truncate max-w-[65%]">
               {product.category}
             </span>
             <div className="flex items-center gap-1 text-[#29251F]">
               <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-[#C6A46A] text-[#C6A46A]" />
-              <span className="font-bold text-[11px] sm:text-xs">{product.rating}</span>
-              <span className="text-[9px] sm:text-[10px] text-[#958878]">({product.reviewsCount})</span>
+              <span className="font-bold text-[10px] sm:text-[11px]">{product.rating}</span>
+              <span className="text-[8px] sm:text-[9px] text-[#958878]">({product.reviewsCount})</span>
             </div>
           </div>
 
           {/* Product Title */}
           <h3
             onClick={() => onSelectProduct ? onSelectProduct(product) : onOpenQuickView(product)}
-            className="font-editorial text-xs sm:text-base lg:text-lg font-medium text-[#29251F] group-hover:text-[#C6A46A] transition-colors line-clamp-1 cursor-pointer"
+            className="font-editorial text-xs sm:text-sm md:text-[15px] font-medium text-[#29251F] group-hover:text-[#C6A46A] transition-colors line-clamp-1 cursor-pointer leading-snug"
           >
             {product.title}
           </h3>
 
           {/* Metal Specs / Purity Snippet */}
-          <p className="text-[10px] sm:text-[11px] text-[#958878] mt-0.5 truncate font-light">
+          <p className="text-[9px] sm:text-[10px] text-[#958878] mt-0.5 truncate font-light">
             {product.metal}
           </p>
 
-          {/* Size Pills Preview (Desktop & Tablet) */}
-          <div className="hidden sm:flex items-center gap-1 mt-2">
-            <span className="text-[10px] text-[#958878] font-medium mr-0.5">Sizes:</span>
-            {(product.sizes || ["One Size"]).map((sz) => (
-              <span
-                key={sz}
-                className="text-[9px] px-1.5 py-0.5 rounded bg-[#FAF7F2] border border-[#E9DED1] text-[#29251F] font-semibold"
-              >
-                {sz}
-              </span>
-            ))}
-          </div>
-
           {/* Pricing */}
-          <div className="flex items-baseline gap-1.5 sm:gap-2 mt-2 flex-wrap">
-            <span className="text-xs sm:text-base lg:text-lg font-bold text-[#29251F]">
+          <div className="flex items-baseline gap-1.5 sm:gap-2 mt-1.5 flex-wrap">
+            <span className="text-xs sm:text-sm md:text-base font-bold text-[#29251F]">
               ₹{product.price.toLocaleString("en-IN")}
             </span>
-            <span className="text-[10px] sm:text-xs text-[#958878] line-through">
+            <span className="text-[9px] sm:text-[11px] text-[#958878] line-through">
               ₹{product.mrp.toLocaleString("en-IN")}
             </span>
-            <span className="text-[8px] sm:text-[10px] font-bold text-[#1B4332] bg-emerald-50 px-1 sm:px-1.5 py-0.5 rounded border border-emerald-200">
+            <span className="text-[8px] sm:text-[9px] font-bold text-[#1B4332] bg-emerald-50 px-1 py-0.5 rounded border border-emerald-200">
               {discountPercent}% OFF
             </span>
           </div>
         </div>
 
         {/* Dual Actions */}
-        <div className="mt-2.5 sm:mt-4 pt-2 sm:pt-3 border-t border-[#E9DED1]/70 flex items-center gap-1.5 sm:gap-2">
+        <div className="mt-2 pt-2 border-t border-[#E9DED1]/70 flex items-center gap-1.5">
           <button
             onClick={() => onOpenQuickView(product)}
-            className="p-1.5 sm:p-2.5 rounded-lg sm:rounded-xl border border-[#E9DED1] hover:bg-[#FAF7F2] text-[#29251F] transition-colors"
+            className="p-1.5 sm:p-2 rounded-md sm:rounded-lg border border-[#E9DED1] hover:bg-[#FAF7F2] text-[#29251F] transition-colors"
             title="Inspect Details"
             aria-label="Quick view"
           >
-            <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C6A46A]" />
+            <Eye className="w-3.5 h-3.5 text-[#C6A46A]" />
           </button>
 
           <button
-            onClick={() => {
-              if (product.sizes.length > 1) {
-                onOpenQuickView(product);
-              } else {
-                onAddToBag(product);
-              }
-            }}
-            className="flex-1 py-1.5 sm:py-2.5 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-[#FAF7F2] hover:bg-[#C6A46A] hover:text-white border border-[#E9DED1] font-semibold text-[10px] sm:text-xs tracking-wider uppercase text-[#29251F] transition-all flex items-center justify-center gap-1 sm:gap-2 active:scale-95"
+            onClick={() => onAddToBag(product)}
+            className="flex-1 py-1.5 sm:py-2 px-2 sm:px-3 rounded-md sm:rounded-lg bg-[#FAF7F2] hover:bg-[#C6A46A] hover:text-white border border-[#E9DED1] font-semibold text-[9px] sm:text-[11px] tracking-wider uppercase text-[#29251F] transition-all flex items-center justify-center gap-1 sm:gap-1.5 active:scale-95"
           >
             <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-            <span className="truncate">{product.sizes.length > 1 ? "Choose Size" : "Add to Bag"}</span>
+            <span className="truncate">Add to Bag</span>
           </button>
         </div>
       </div>

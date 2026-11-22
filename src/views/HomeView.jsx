@@ -8,7 +8,6 @@ import {
   Award,
   Truck,
   Heart,
-  Search,
   Filter,
   ChevronDown,
   HelpCircle,
@@ -33,7 +32,6 @@ export default function HomeView({
   const [selectedCollection, setSelectedCollection] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("featured");
-  const [localSearch, setLocalSearch] = useState("");
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
   // Scroll to catalog section helper
@@ -74,15 +72,6 @@ export default function HomeView({
           const matchGroup = product.categoryGroup && product.categoryGroup.toLowerCase() === selectedCategory.toLowerCase();
           if (!matchName && !matchGroup) return false;
         }
-        // Local Search filter
-        if (localSearch.trim()) {
-          const q = localSearch.toLowerCase();
-          const matchTitle = product.title.toLowerCase().includes(q);
-          const matchCat = product.category.toLowerCase().includes(q);
-          const matchCol = product.collection.toLowerCase().includes(q);
-          const matchDesc = product.description.toLowerCase().includes(q);
-          if (!matchTitle && !matchCat && !matchCol && !matchDesc) return false;
-        }
         return true;
       })
       .sort((a, b) => {
@@ -91,7 +80,7 @@ export default function HomeView({
         if (sortBy === "rating") return b.rating - a.rating;
         return 0; // "featured"
       });
-  }, [storeConfig.products, selectedCollection, selectedCategory, localSearch, sortBy]);
+  }, [storeConfig.products, selectedCollection, selectedCategory, sortBy]);
 
   // Featured Bestsellers for the spotlight row
   const bestsellers = useMemo(() => {
@@ -99,13 +88,13 @@ export default function HomeView({
   }, [storeConfig.products]);
 
   return (
-    <div className="flex-1 flex flex-col w-full bg-[#F5F0E7]">
+    <div className="flex-1 flex flex-col w-full max-w-full overflow-x-hidden bg-[#F5F0E7]">
       
       {/* =====================================================================
           1. FULL-WIDTH CINEMATIC HERO BANNER SLIDER (75–90vh Desktop, 65–75vh Mobile)
           3 Model Campaign Banners: Royal Gold, Diamond Dreams, Bridal Suite
           ===================================================================== */}
-      <section className="w-full">
+      <section className="w-full max-w-full overflow-hidden">
         <HeroBannerSlider
           banners={storeConfig.heroBanners}
           onCtaClick={handleBannerCta}
@@ -115,7 +104,7 @@ export default function HomeView({
       {/* =====================================================================
           2. MINIMALIST LUXURY TRUST PILLARS STRIP
           ===================================================================== */}
-      <section className="w-full bg-[#FAF7F2] border-y border-[#E9DED1] py-5 sm:py-6 px-4">
+      <section className="w-full max-w-full bg-[#FAF7F2] border-y border-[#E9DED1] py-5 sm:py-6 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           
           <div className="flex items-center gap-3">
@@ -162,13 +151,13 @@ export default function HomeView({
       </section>
 
       {/* =====================================================================
-          3. SHOP BY SILHOUETTE / CATEGORY (8 Curated Categories with Unique Photos)
+          3. SHOP BY CATEGORY (Curated Categories with Fine Jewellery Photos)
           ===================================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 w-full">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 w-full max-w-full overflow-hidden">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#C6A46A] flex items-center justify-center gap-1.5 mb-2">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>EXQUISITE SILHOUETTES</span>
+            <span>EXQUISITE CREATIONS</span>
           </span>
           <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl font-normal text-[#29251F] tracking-tight">
             Shop by Category
@@ -178,15 +167,15 @@ export default function HomeView({
           </p>
         </div>
 
-        {/* 8-Category Grid with Circular Luxury Frames */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-6">
+        {/* 7-Category Grid with Circular Luxury Frames */}
+        <div className="flex sm:grid overflow-x-auto sm:overflow-visible sm:grid-cols-4 lg:grid-cols-7 gap-4 sm:gap-6 pb-2 sm:pb-0 no-scrollbar justify-start sm:justify-center">
           {storeConfig.categories.map((cat) => {
             const isSelected = selectedCategory === cat.name;
             return (
               <button
                 key={cat.id}
                 onClick={() => handleCategorySelect(cat.name)}
-                className="group flex flex-col items-center text-center focus:outline-none transition-all transform hover:-translate-y-1"
+                className="group flex flex-col items-center text-center focus:outline-none transition-all transform hover:-translate-y-1 flex-shrink-0 w-20 sm:w-auto"
               >
                 {/* Image Container with Gold Ring Hover */}
                 <div className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full p-1 transition-all duration-300 ${
@@ -222,19 +211,19 @@ export default function HomeView({
       {/* =====================================================================
           4. CURATED BESTSELLERS SPOTLIGHT (Top 4 Flagship Heirlooms)
           ===================================================================== */}
-      <section className="bg-[#FAF7F2] border-y border-[#E9DED1] py-14 sm:py-20 w-full">
+      <section className="bg-[#FAF7F2] border-y border-[#E9DED1] py-8 sm:py-12 w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-3">
             <div>
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#C6A46A] flex items-center gap-1.5 mb-2">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#C6A46A] flex items-center gap-1.5 mb-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>CROWN JEWELS</span>
               </span>
-              <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl font-normal text-[#29251F] tracking-tight">
+              <h2 className="font-editorial text-2xl sm:text-3xl lg:text-4xl font-normal text-[#29251F] tracking-tight">
                 Most Coveted Bestsellers
               </h2>
-              <p className="text-xs sm:text-sm text-[#958878] mt-1 font-light">
+              <p className="text-xs sm:text-sm text-[#958878] mt-0.5 font-light">
                 Pieces that our patrons wear, cherish, and gift the most.
               </p>
             </div>
@@ -245,15 +234,15 @@ export default function HomeView({
                 setSelectedCategory("All");
                 scrollToCatalog();
               }}
-              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#29251F] hover:text-[#C6A46A] transition-colors group"
+              className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#29251F] hover:text-[#C6A46A] transition-colors group"
             >
-              <span>View All {storeConfig.products.length} Heirlooms</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <span>View All</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
 
-          {/* 4 Bestsellers Grid: 2 columns on mobile, 2 on tablet, 4 on desktop */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          {/* 4 Bestsellers Grid: Compact & refined */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
             {bestsellers.map((product) => (
               <ProductCard
                 key={product.id}
@@ -273,94 +262,94 @@ export default function HomeView({
       {/* =====================================================================
           5. ASYMMETRIC EDITORIAL MODEL CAMPAIGN (Tanishq & Cartier Inspiration)
           ===================================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full max-w-full overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
           
-          {/* Left Campaign Model Portrait (Aspect 3:4) */}
-          <div className="lg:col-span-6 rounded-3xl overflow-hidden relative shadow-luxury border border-[#E9DED1] group min-h-[460px] bg-[#29251F]">
+          {/* Left Campaign Model Portrait (Aspect 3:4 / Compact AI Atelier Model) */}
+          <div className="lg:col-span-5 xl:col-span-5 rounded-2xl sm:rounded-3xl overflow-hidden relative shadow-luxury border border-[#E9DED1] group h-[320px] sm:h-[400px] lg:h-[440px] bg-[#29251F]">
             <SafeImage
-              src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=85&w=1200"
+              src="/banners/banner_bridal_mobile.jpg"
               alt="Indian Fine Jewellery Campaign"
-              className="w-full h-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105 opacity-95"
+              className="w-full h-full object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-105 opacity-95"
             />
             {/* Cinematic Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#29251F]/90 via-[#29251F]/30 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#29251F]/90 via-[#29251F]/25 to-transparent pointer-events-none" />
             
-            <div className="absolute bottom-8 left-8 right-8 text-white z-10">
-              <span className="inline-block px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-[10px] sm:text-xs uppercase tracking-widest text-[#DFCCA6] font-semibold mb-3">
-                EDITORIAL MASTERPIECE
+            <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-white z-10">
+              <span className="inline-block px-3 py-0.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-[9px] sm:text-[10px] uppercase tracking-widest text-[#DFCCA6] font-semibold mb-2">
+                ROYAL HERITAGE ATELIER
               </span>
-              <h3 className="font-editorial text-3xl sm:text-4xl text-white font-normal leading-tight">
-                "Adornment is the silent language of sovereign beauty."
+              <h3 className="font-editorial text-lg sm:text-2xl text-white font-normal leading-tight">
+                "Adornment is the sacred language of sovereign grace."
               </h3>
-              <p className="text-xs sm:text-sm text-[#E9DED1]/80 mt-2 font-light">
-                Handcrafted Kundan chandbalis and layered necklaces forged for the contemporary empress.
+              <p className="text-[11px] sm:text-xs text-[#E9DED1]/80 mt-1.5 font-light line-clamp-2">
+                Handcrafted Kundan, Polki, and temple gold heirlooms forged for timeless celebrations.
               </p>
             </div>
           </div>
 
           {/* Right Champagne Editorial Card */}
-          <div className="lg:col-span-6 bg-[#FAF7F2] rounded-3xl border border-[#E9DED1] p-8 sm:p-12 flex flex-col justify-between shadow-luxury">
+          <div className="lg:col-span-7 xl:col-span-7 bg-[#FAF7F2] rounded-2xl sm:rounded-3xl border border-[#E9DED1] p-5 sm:p-7 lg:p-8 flex flex-col justify-between shadow-luxury min-h-[380px] h-auto lg:h-[440px]">
             <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#E9DED1] text-[#C6A46A] text-[10px] sm:text-xs font-bold tracking-widest uppercase mb-6">
+              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white border border-[#E9DED1] text-[#C6A46A] text-[9px] sm:text-[10px] font-bold tracking-widest uppercase mb-3">
                 <Sparkles className="w-3 h-3 text-[#C6A46A]" />
                 <span>THE ATELIER PHILOSOPHY</span>
               </div>
 
-              <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl font-normal text-[#29251F] leading-[1.15] mb-6">
-                Heritage Artistry Crafted for Everyday Wonder
+              <h2 className="font-editorial text-xl sm:text-2xl lg:text-3xl font-normal text-[#29251F] leading-snug mb-3">
+                Imperial Heritage Artistry & Generational Goldsmithing
               </h2>
 
-              <p className="text-xs sm:text-sm text-[#5A5348] leading-relaxed mb-6 font-light">
-                At SHRINGAR, we believe royal jewellery should never be locked away in safety lockers. 
-                Using generational Jaipur Kundan karigari, hand-set Polki glass, and an advanced 
-                18K gold micron plating with anti-tarnish molecular bonding, our heirlooms transition effortlessly 
-                from morning boardroom meetings to evening celebrations.
+              <p className="text-xs text-[#5A5348] leading-relaxed mb-4 font-light line-clamp-3">
+                At SHRINGAR, every creation is a tribute to India's grand goldsmithing legacy. 
+                Handcrafted by master karigars in Jaipur and Bengal, each heirloom harmonizes 
+                generational Nakashi embossing, hand-set Polki stones, and pure 22K gold tones—crafting 
+                enduring treasures designed to be passed down through generations.
               </p>
 
               {/* 3 Pillars List */}
-              <div className="space-y-3.5 mb-8">
-                <div className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-[#C6A46A]/20 text-[#C6A46A] flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✦</span>
+              <div className="space-y-2 mb-4">
+                <div className="flex items-start gap-2.5">
+                  <span className="w-4 h-4 rounded-full bg-[#C6A46A]/20 text-[#C6A46A] flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">✦</span>
                   <p className="text-xs text-[#29251F]">
-                    <strong>18K Temple Gold Dip:</strong> Deep, regal luster that mirrors solid 22K ancestral heirloom gold.
+                    <strong>Ancestral Nakashi & Kundan Karigari:</strong> Meticulously hand-chiseled by hereditary master artisans with museum-grade precision.
                   </p>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-[#C6A46A]/20 text-[#C6A46A] flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✦</span>
+                <div className="flex items-start gap-2.5">
+                  <span className="w-4 h-4 rounded-full bg-[#C6A46A]/20 text-[#C6A46A] flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">✦</span>
                   <p className="text-xs text-[#29251F]">
-                    <strong>Sweat & Water Resistant:</strong> Formulated for tropical climates, resistant to daily perfume and moisture.
+                    <strong>Hallmarked Imperial Luster:</strong> Forged in authentic 22K & 18K tones with an enduring royal sheen that never dims.
                   </p>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-[#C6A46A]/20 text-[#C6A46A] flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✦</span>
+                <div className="flex items-start gap-2.5">
+                  <span className="w-4 h-4 rounded-full bg-[#C6A46A]/20 text-[#C6A46A] flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">✦</span>
                   <p className="text-xs text-[#29251F]">
-                    <strong>100% Skin Safe:</strong> Certified hypoallergenic, free of toxic nickel and cadmium.
+                    <strong>Certified Pure & Hypoallergenic:</strong> Dermatologist-certified skin-safe alloys engineered for all-day royal comfort.
                   </p>
                 </div>
               </div>
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-[#E9DED1]">
+            <div className="flex flex-col sm:flex-row gap-2.5 pt-4 border-t border-[#E9DED1]">
               <button
                 onClick={() => {
-                  setSelectedCategory("Bridal Jewellery");
+                  setSelectedCollection("all");
                   scrollToCatalog();
                 }}
-                className="px-8 py-4 rounded-full bg-[#C6A46A] hover:bg-[#B08E55] text-white font-semibold text-xs tracking-widest uppercase transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
+                className="px-6 py-2.5 rounded-full bg-[#C6A46A] hover:bg-[#B08E55] text-white font-semibold text-xs tracking-wider uppercase transition-all shadow-md active:scale-95 flex items-center justify-center gap-1.5"
               >
-                <span>Explore Bridal Suite</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Explore Fine Heirlooms</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
 
               <button
                 onClick={() => onNavigate('contact')}
-                className="px-8 py-4 rounded-full bg-white hover:bg-[#F2EBE2] border border-[#C6A46A] text-[#29251F] font-semibold text-xs tracking-widest uppercase transition-all active:scale-95 text-center"
+                className="px-6 py-2.5 rounded-full bg-white hover:bg-[#F2EBE2] border border-[#C6A46A] text-[#29251F] font-semibold text-xs tracking-wider uppercase transition-all active:scale-95 text-center"
               >
-                Book Styling Consultation
+                Book Private Consultation
               </button>
             </div>
 
@@ -373,31 +362,31 @@ export default function HomeView({
           6. THE MASTER CURATED CATALOG GRID (id="curated-catalog")
           Filters, Collections, Search, Sort & Responsive 1:1 Product Grid
           ===================================================================== */}
-      <section id="curated-catalog" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 w-full scroll-mt-24">
+      <section id="curated-catalog" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full max-w-full scroll-mt-24 overflow-hidden">
         
         {/* Catalog Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#C6A46A] flex items-center justify-center gap-1.5 mb-2">
+        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
+          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#C6A46A] flex items-center justify-center gap-1.5 mb-1.5">
             <Sparkles className="w-3.5 h-3.5" />
             <span>THE CURATED VAULT</span>
           </span>
-          <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl font-normal text-[#29251F] tracking-tight">
+          <h2 className="font-editorial text-2xl sm:text-3xl lg:text-4xl font-normal text-[#29251F] tracking-tight">
             Explore All Creations
           </h2>
-          <p className="text-xs sm:text-sm text-[#958878] mt-2 font-light">
-            Filter by collection or silhouette to discover your next statement treasure.
+          <p className="text-xs sm:text-sm text-[#958878] mt-1 font-light">
+            Filter by collection or category to discover your next statement treasure.
           </p>
         </div>
 
         {/* Collection Filter Tabs */}
-        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-6">
+        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar pb-2.5 mb-4 sm:mb-5">
           {storeConfig.featuredCollections.map((col) => {
             const isActive = selectedCollection === col.id;
             return (
               <button
                 key={col.id}
                 onClick={() => setSelectedCollection(col.id)}
-                className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all ${
+                className={`flex-shrink-0 px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all ${
                   isActive
                     ? "bg-[#29251F] text-[#F5F0E7] shadow-luxury"
                     : "bg-[#FAF7F2] text-[#958878] hover:text-[#29251F] border border-[#E9DED1]"
@@ -409,51 +398,31 @@ export default function HomeView({
           })}
         </div>
 
-        {/* Secondary Filter Bar: Category Dropdown, Search Input, Sort Dropdown */}
-        <div className="bg-[#FAF7F2] rounded-2xl border border-[#E9DED1] p-3 sm:p-4 mb-8 flex flex-col md:flex-row items-center justify-between gap-3 shadow-sm">
+        {/* Secondary Filter Bar: Category Dropdown & Sort Dropdown */}
+        <div className="bg-[#FAF7F2] rounded-xl sm:rounded-2xl border border-[#E9DED1] p-2.5 sm:p-3 mb-5 flex items-center justify-between gap-3 shadow-sm">
           
           {/* Left: Category Filter Pills / Dropdown */}
-          <div className="flex items-center gap-2 w-full md:w-auto">
-            <span className="text-xs font-semibold text-[#958878] uppercase tracking-wider hidden sm:inline">Silhouette:</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-[#958878] uppercase tracking-wider hidden sm:inline">Category:</span>
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="text-xs font-medium bg-white border border-[#E9DED1] rounded-xl px-3 py-2 text-[#29251F] focus:outline-none focus:border-[#C6A46A] w-full sm:w-auto"
+              className="text-xs font-medium bg-white border border-[#E9DED1] rounded-lg sm:rounded-xl px-2.5 py-1.5 text-[#29251F] focus:outline-none focus:border-[#C6A46A]"
             >
-              <option value="All">All Silhouettes ({storeConfig.products.length})</option>
+              <option value="All">All Categories ({storeConfig.products.length})</option>
               {storeConfig.categories.map((c) => (
                 <option key={c.id} value={c.name}>{c.name}</option>
               ))}
             </select>
           </div>
 
-          {/* Center: Search Field */}
-          <div className="relative w-full md:w-72">
-            <Search className="w-3.5 h-3.5 text-[#958878] absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={localSearch}
-              onChange={(e) => setLocalSearch(e.target.value)}
-              placeholder="Search jhumka, choker, ring..."
-              className="w-full pl-9 pr-4 py-2 rounded-xl text-xs bg-white border border-[#E9DED1] focus:outline-none focus:border-[#C6A46A] text-[#29251F]"
-            />
-            {localSearch && (
-              <button
-                onClick={() => setLocalSearch("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#958878] hover:text-[#29251F]"
-              >
-                ✕
-              </button>
-            )}
-          </div>
-
           {/* Right: Sort By */}
-          <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+          <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-[#958878] uppercase tracking-wider hidden sm:inline">Sort:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="text-xs font-medium bg-white border border-[#E9DED1] rounded-xl px-3 py-2 text-[#29251F] focus:outline-none focus:border-[#C6A46A] w-full sm:w-auto"
+              className="text-xs font-medium bg-white border border-[#E9DED1] rounded-lg sm:rounded-xl px-2.5 py-1.5 text-[#29251F] focus:outline-none focus:border-[#C6A46A]"
             >
               <option value="featured">Featured Creations</option>
               <option value="price-low">Price: Low to High</option>
@@ -465,19 +434,18 @@ export default function HomeView({
         </div>
 
         {/* Dynamic Products Counter */}
-        <div className="flex items-center justify-between mb-6 text-xs text-[#958878]">
+        <div className="flex items-center justify-between mb-4 text-xs text-[#958878]">
           <span>
             Showing <strong className="text-[#29251F] font-bold">{filteredProducts.length}</strong> creations
             {selectedCategory !== "All" && ` in ${selectedCategory}`}
             {selectedCollection !== "all" && ` (${selectedCollection})`}
           </span>
 
-          {(selectedCategory !== "All" || selectedCollection !== "all" || localSearch) && (
+          {(selectedCategory !== "All" || selectedCollection !== "all") && (
             <button
               onClick={() => {
                 setSelectedCategory("All");
                 setSelectedCollection("all");
-                setLocalSearch("");
               }}
               className="text-[#C6A46A] font-bold hover:underline"
             >
@@ -486,9 +454,9 @@ export default function HomeView({
           )}
         </div>
 
-        {/* Product Cards Grid: 2 columns on mobile (grid-cols-2), 3 on tablet, 4 on desktop */}
+        {/* Product Cards Grid: Compact refined 4-column layout */}
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
@@ -502,18 +470,17 @@ export default function HomeView({
             ))}
           </div>
         ) : (
-          /* Empty Catalog Search / Filter State */
+          /* Empty Catalog Filter State */
           <div className="bg-[#FAF7F2] rounded-3xl border border-[#E9DED1] p-12 text-center max-w-md mx-auto my-12">
             <Gem className="w-12 h-12 text-[#C6A46A] mx-auto mb-4 stroke-1" />
             <h3 className="font-editorial text-2xl font-normal text-[#29251F] mb-2">No Matching Creations Found</h3>
             <p className="text-xs text-[#958878] mb-6">
-              Try refining your search keyword or clearing the filters to view our full collection of royal heirlooms.
+              Try clearing the filters to view our full collection of royal heirlooms.
             </p>
             <button
               onClick={() => {
                 setSelectedCategory("All");
                 setSelectedCollection("all");
-                setLocalSearch("");
               }}
               className="px-6 py-3 rounded-full bg-[#29251F] text-[#F5F0E7] text-xs font-semibold uppercase tracking-wider hover:bg-[#C6A46A] transition-colors"
             >
@@ -525,67 +492,9 @@ export default function HomeView({
       </section>
 
       {/* =====================================================================
-          7. THE BRIDAL SUITE SHOWCASE (Regal Wedding Trousseau)
+          7. VERIFIED PATRON TESTIMONIALS (Luxury Customer Trust)
           ===================================================================== */}
-      <section className="w-full bg-[#29251F] text-[#F5F0E7] py-16 sm:py-24 relative overflow-hidden">
-        {/* Subtle decorative background glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#C6A46A]/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#B08E55]/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            
-            {/* Left Bridal Text Content */}
-            <div className="lg:col-span-6">
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#DFCCA6] flex items-center gap-1.5 mb-3">
-                <Sparkles className="w-3.5 h-3.5 text-[#C6A46A]" />
-                <span>THE BRIDAL SUITE</span>
-              </span>
-              <h2 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-normal text-white leading-tight mb-6">
-                Made for Your Forever Moments
-              </h2>
-              <p className="text-xs sm:text-base text-[#FAF7F2]/80 leading-relaxed font-light mb-8 max-w-lg">
-                Cascading Polki rani haars, handcrafted matha pattis, bridal naths, and matching chandelier jhumkas. 
-                Our bridal specialists work directly with you to curate jewelry that harmonizes with your wedding lehenga.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={() => {
-                    setSelectedCategory("Bridal Jewellery");
-                    scrollToCatalog();
-                  }}
-                  className="px-8 py-4 rounded-full bg-[#C6A46A] hover:bg-[#B08E55] text-white font-semibold text-xs tracking-widest uppercase transition-all shadow-luxury active:scale-95 text-center"
-                >
-                  Shop Bridal Pieces
-                </button>
-
-                <button
-                  onClick={() => onNavigate('contact')}
-                  className="px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 text-white font-semibold text-xs tracking-widest uppercase transition-all active:scale-95 text-center"
-                >
-                  Consult Bridal Stylist
-                </button>
-              </div>
-            </div>
-
-            {/* Right Bridal Model Image */}
-            <div className="lg:col-span-6 rounded-3xl overflow-hidden shadow-2xl border border-white/15 aspect-[4/3] sm:aspect-[16/10] bg-[#1A1715]">
-              <SafeImage
-                src="https://images.unsplash.com/photo-1610030469668-93510cb2866c?auto=format&fit=crop&q=85&w=1200"
-                alt="Indian Bridal Jewellery Collection"
-                className="w-full h-full object-cover object-center"
-              />
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* =====================================================================
-          8. VERIFIED PATRON TESTIMONIALS (Luxury Customer Trust)
-          ===================================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full max-w-full overflow-hidden">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#C6A46A] flex items-center justify-center gap-1.5 mb-2">
             <Sparkles className="w-3.5 h-3.5" />
@@ -637,7 +546,7 @@ export default function HomeView({
       {/* =====================================================================
           9. FREQUENTLY ASKED QUESTIONS (FAQ Accordion)
           ===================================================================== */}
-      <section className="bg-[#FAF7F2] border-t border-[#E9DED1] py-16 sm:py-20 w-full">
+      <section className="bg-[#FAF7F2] border-t border-[#E9DED1] py-16 sm:py-20 w-full max-w-full overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center mb-12">
